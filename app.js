@@ -4,7 +4,7 @@
    Veja instruções em Code.gs e no README.md
 =================================================================== */
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbzT4Z3uo0fNSiLBXqIVQLsKEBaWAqQx0tn5fVN5tc-p4SNKSTPTLHVTqud8X3N-pQ6I',
+  API_URL: 'https://script.google.com/macros/s/AKfycbzT4Z3uo0fNSiLBXqIVQLsKEBaWAqQx0tn5fVN5tc-p4SNKSTPTLHVTqud8X3N-pQ6I/exec',
 };
 
 const UNIDADES = [
