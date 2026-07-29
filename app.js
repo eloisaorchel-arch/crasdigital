@@ -4,7 +4,7 @@
    Veja instruções em Code.gs e no README.md
 =================================================================== */
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbzT4Z3uo0fNSiLBXqIVQLsKEBaWAqQx0tn5fVN5tc-p4SNKSTPTLHVTqud8X3N-pQ6I/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbyMXfYdSkllE2TWbyqeqtPyVkVb8QJnBVr1f6cRbrrxHKY57S3O1FKErxU3M85J7tGSiA/exec',
 };
 
 const UNIDADES = [
@@ -375,6 +375,82 @@ document.getElementById('linkGoCadastro').addEventListener('click', (e) => {
   showView('view-cadastro');
 });
 
+/* ===================================================================
+   ESQUECI MINHA SENHA (dentro do modal de login)
+=================================================================== */
+const loginFormBox = document.getElementById('loginFormBox');
+const forgotPasswordBox = document.getElementById('forgotPasswordBox');
+
+document.getElementById('linkForgotPassword').addEventListener('click', (e) => {
+  e.preventDefault();
+  loginFormBox.classList.add('hidden');
+  forgotPasswordBox.classList.remove('hidden');
+});
+document.getElementById('btnBackToLogin').addEventListener('click', () => {
+  forgotPasswordBox.classList.add('hidden');
+  loginFormBox.classList.remove('hidden');
+});
+
+document.getElementById('formForgotPassword').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!apiReady()) return;
+  const email = document.getElementById('forgotEmail').value.trim();
+  try {
+    const res = await apiPost({ action: 'requestPasswordReset', email });
+    toast(res.message || 'Se este e-mail estiver cadastrado, você receberá o link de redefinição.', 'success');
+    e.target.reset();
+    forgotPasswordBox.classList.add('hidden');
+    loginFormBox.classList.remove('hidden');
+    modal.classList.remove('active');
+  } catch (err) {
+    toast(err.message, 'error');
+  }
+});
+
+/* ===================================================================
+   REDEFINIR SENHA (acessado pelo link enviado por e-mail: ?reset=TOKEN)
+=================================================================== */
+const resetPasswordModal = document.getElementById('resetPasswordModal');
+let resetToken = null;
+
+function checkResetLinkFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('reset');
+  if (token) {
+    resetToken = token;
+    resetPasswordModal.classList.add('active');
+  }
+}
+
+document.getElementById('formResetPassword').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!apiReady()) return;
+  const senha1 = document.getElementById('novaSenha1').value;
+  const senha2 = document.getElementById('novaSenha2').value;
+  if (senha1 !== senha2) {
+    toast('As senhas digitadas não são iguais.', 'error');
+    return;
+  }
+  if (!resetToken) {
+    toast('Link de redefinição inválido.', 'error');
+    return;
+  }
+  try {
+    await apiPost({ action: 'resetPassword', token: resetToken, novaSenha: senha1 });
+    toast('Senha redefinida com sucesso! Faça login com a nova senha.', 'success');
+    resetPasswordModal.classList.remove('active');
+    e.target.reset();
+    resetToken = null;
+    // limpa o parâmetro "reset" da URL e abre o login
+    const url = new URL(window.location.href);
+    url.searchParams.delete('reset');
+    window.history.replaceState({}, '', url.toString());
+    modal.classList.add('active');
+  } catch (err) {
+    toast(err.message, 'error');
+  }
+});
+
 function doLogout() {
   session = null;
   localStorage.removeItem('cras_session');
@@ -645,3 +721,4 @@ function fmtDate(v) {
 /* Inicialização */
 updateHeaderUI();
 showView('view-home');
+checkResetLinkFromUrl();

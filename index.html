@@ -135,26 +135,67 @@
 <!-- ===================== MODAL LOGIN ===================== -->
 <div class="modal-overlay" id="loginModal">
   <div class="modal-box">
-    <h3>Entrar</h3>
-    <p class="hint">Acesse com o e-mail e a senha do seu cadastro.</p>
-    <form id="formLogin">
+    <div id="loginFormBox">
+      <h3>Entrar</h3>
+      <p class="hint">Acesse com o e-mail e a senha do seu cadastro.</p>
+      <form id="formLogin">
+        <div class="field" style="margin-bottom:14px;">
+          <label>E-mail</label>
+          <input type="email" id="loginEmail" required placeholder="seuemail@exemplo.com" />
+        </div>
+        <div class="field">
+          <label>Senha</label>
+          <input type="password" id="loginSenha" required placeholder="••••••••" />
+        </div>
+        <div class="modal-close-row">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnCloseModal">Cancelar</button>
+          <button type="submit" class="btn btn-solid btn-sm">Entrar</button>
+        </div>
+      </form>
+      <p style="margin-top:14px;font-size:0.85rem;text-align:center;">
+        <a href="#" id="linkForgotPassword" style="color:var(--blue-600);font-weight:700;">Esqueceu sua senha?</a>
+      </p>
+      <p style="margin-top:10px;font-size:0.85rem;text-align:center;color:var(--gray-500);">
+        Ainda não tem cadastro?
+        <a href="#" id="linkGoCadastro" style="color:var(--blue-600);font-weight:700;">Criar cadastro</a>
+      </p>
+    </div>
+
+    <div id="forgotPasswordBox" class="hidden">
+      <h3>Redefinir senha</h3>
+      <p class="hint">Digite o e-mail do seu cadastro. Se ele estiver em nossa base, enviaremos um link para você redefinir sua senha.</p>
+      <form id="formForgotPassword">
+        <div class="field" style="margin-bottom:14px;">
+          <label>E-mail</label>
+          <input type="email" id="forgotEmail" required placeholder="seuemail@exemplo.com" />
+        </div>
+        <div class="modal-close-row">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnBackToLogin">Voltar</button>
+          <button type="submit" class="btn btn-solid btn-sm">Enviar link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL REDEFINIR SENHA (via link do e-mail) ===================== -->
+<div class="modal-overlay" id="resetPasswordModal">
+  <div class="modal-box">
+    <h3>Escolha sua nova senha</h3>
+    <p class="hint">Preencha os dois campos abaixo com a mesma senha para confirmar a redefinição.</p>
+    <form id="formResetPassword">
       <div class="field" style="margin-bottom:14px;">
-        <label>E-mail</label>
-        <input type="email" id="loginEmail" required placeholder="seuemail@exemplo.com" />
+        <label>Redefina sua senha</label>
+        <input type="password" id="novaSenha1" required minlength="4" placeholder="••••••••" />
       </div>
       <div class="field">
-        <label>Senha</label>
-        <input type="password" id="loginSenha" required placeholder="••••••••" />
+        <label>Confirme a senha</label>
+        <input type="password" id="novaSenha2" required minlength="4" placeholder="••••••••" />
       </div>
       <div class="modal-close-row">
-        <button type="button" class="btn btn-ghost btn-sm" id="btnCloseModal">Cancelar</button>
-        <button type="submit" class="btn btn-solid btn-sm">Entrar</button>
+        <button type="submit" class="btn btn-solid btn-sm">Redefinir senha</button>
       </div>
     </form>
-    <p style="margin-top:18px;font-size:0.85rem;text-align:center;color:var(--gray-500);">
-      Ainda não tem cadastro?
-      <a href="#" id="linkGoCadastro" style="color:var(--blue-600);font-weight:700;">Criar cadastro</a>
-    </p>
   </div>
 </div>
 
