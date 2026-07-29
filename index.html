@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CRAS Digital — Sistema de Atendimento</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">CR</div>
+      <div>
+        CRAS Digital
+        <small>Assistência Social ao alcance de todos</small>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <button data-view="view-home" class="active">Início</button>
+      <button data-view="view-atendimento" data-protected="true">Registrar Atendimento</button>
+      <button data-view="view-consulta" data-protected="true">Consultar Atendimento</button>
+    </nav>
+    <div id="authArea"></div>
+  </div>
+</header>
+
+<!-- ===================== HOME ===================== -->
+<section id="view-home" class="view active">
+  <div class="hero">
+    <h1>Bem-vindo ao CRAS Digital</h1>
+    <p>Plataforma para registro e acompanhamento de atendimentos do Centro de Referência de Assistência Social — famílias, benefícios eventuais e serviços socioassistenciais em um só lugar.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" id="btnGoAtendimento">Registrar Atendimento</button>
+      <button class="btn btn-outline" id="btnGoConsulta">Consultar Atendimento</button>
+    </div>
+    <p style="margin-top:18px; font-size:0.85rem; opacity:0.75;">
+      É necessário ter um cadastro aprovado para acessar essas áreas.
+    </p>
+  </div>
+  <div class="container">
+    <h2 class="section-title">Como podemos ajudar</h2>
+    <p class="section-sub">Serviços oferecidos pelo Centro de Referência de Assistência Social (CRAS)</p>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="num">PAIF</div>
+        <div class="label">Serviço de Proteção e Atendimento Integral à Família</div>
+      </div>
+      <div class="info-card">
+        <div class="num">SCFV</div>
+        <div class="label">Serviço de Convivência e Fortalecimento de Vínculos</div>
+      </div>
+      <div class="info-card">
+        <div class="num">B.E.</div>
+        <div class="label">Benefícios Eventuais: auxílio-natalidade, funeral, cesta básica e mais</div>
+      </div>
+      <div class="info-card">
+        <div class="num">Cadastro</div>
+        <div class="label">Inclusão e atualização no Cadastro Único</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CRIAR CADASTRO ===================== -->
+<section id="view-cadastro" class="view">
+  <div class="container">
+    <h2 class="section-title">Criar Cadastro</h2>
+    <p class="section-sub">Preencha seus dados para solicitar acesso ao sistema. Seu cadastro será analisado pelo administrador antes de ser liberado.</p>
+    <div class="form-card">
+      <form id="formCadastro">
+        <div class="form-grid" id="cadastroFields"></div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-solid">Enviar Cadastro</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NOVO ATENDIMENTO (restrito) ===================== -->
+<section id="view-atendimento" class="view">
+  <div class="container">
+    <h2 class="section-title">Registrar Novo Atendimento</h2>
+    <p class="section-sub">Preencha os dados da família. O atendimento será vinculado à sua unidade automaticamente.</p>
+    <div class="form-card">
+      <form id="formAtendimento">
+        <div class="form-grid" id="atendimentoFields"></div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-solid">Salvar Atendimento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONSULTA (restrita à unidade) ===================== -->
+<section id="view-consulta" class="view">
+  <div class="container">
+    <h2 class="section-title" id="consultaUnidadeTitle">Consultar Atendimentos</h2>
+    <p class="section-sub">Veja todos os atendimentos já registrados pela sua unidade.</p>
+    <div class="form-card" style="max-width: 480px;">
+      <div class="field">
+        <label>Filtrar por família ou CPF</label>
+        <input type="text" id="consultaFiltro" placeholder="Digite para filtrar..." />
+      </div>
+    </div>
+    <div id="consultaResult" style="margin-top: 24px;"></div>
+  </div>
+</section>
+
+<!-- ===================== ADMIN ===================== -->
+<section id="view-admin" class="view">
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="user-box">
+        <div class="name" id="adminUserName">—</div>
+        <div class="role" id="adminUserRole">—</div>
+      </div>
+      <div id="adminSidebarTables"></div>
+      <button id="btnLogoutSidebar" style="margin-top: 20px; color:#ff9d9d;">Sair</button>
+    </aside>
+    <main class="admin-main">
+      <div class="panel" id="adminPanel"></div>
+    </main>
+  </div>
+</section>
+
+<footer class="site-footer">
+  CRAS Digital — Sistema de Gestão de Atendimentos Socioassistenciais
+</footer>
+
+<!-- ===================== MODAL LOGIN ===================== -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <h3>Entrar</h3>
+    <p class="hint">Acesse com o e-mail e a senha do seu cadastro.</p>
+    <form id="formLogin">
+      <div class="field" style="margin-bottom:14px;">
+        <label>E-mail</label>
+        <input type="email" id="loginEmail" required placeholder="seuemail@exemplo.com" />
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <input type="password" id="loginSenha" required placeholder="••••••••" />
+      </div>
+      <div class="modal-close-row">
+        <button type="button" class="btn btn-ghost btn-sm" id="btnCloseModal">Cancelar</button>
+        <button type="submit" class="btn btn-solid btn-sm">Entrar</button>
+      </div>
+    </form>
+    <p style="margin-top:18px;font-size:0.85rem;text-align:center;color:var(--gray-500);">
+      Ainda não tem cadastro?
+      <a href="#" id="linkGoCadastro" style="color:var(--blue-600);font-weight:700;">Criar cadastro</a>
+    </p>
+  </div>
+</div>
+
+<!-- ===================== MODAL REGISTRO (admin CRUD) ===================== -->
+<div class="modal-overlay" id="recordModal">
+  <div class="modal-box" style="max-width: 640px;" id="recordModalContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
